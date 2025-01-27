@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scraper & Enrichment Web App</title>
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="script.js"></script>
+    <style>
+        /* Reset some default styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Body and Global Styling */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f7f7f7;
+            color: #444;
+            line-height: 1.6;
+        }
+
+        /* Header Section */
+        header {
+            background-color: #2C3E50;
+            color: white;
+            padding: 20px 30px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+        }
+
+        /* Main Section Styling */
+        main {
+            padding: 20px 30px;
+            margin: 0 auto;
+            max-width: 1200px;
+        }
+
+        /* Task Creation Section */
+        #task-creation {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+
+        #task-creation h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: #2C3E50;
+        }
+
+        #task-creation p {
+            margin-bottom: 20px;
+            color: #7f8c8d;
+        }
+
+        label {
+            display: block;
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #34495e;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 12px;
+            font-size: 1rem;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        select:focus, input:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 25px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        button:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+        /* Data Display Section */
+        #data-display {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-top: 40px;
+        }
+
+        #data-display h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: #2C3E50;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            font-size: 1rem;
+        }
+
+        th {
+            background-color: #f4f4f9;
+            color: #2C3E50;
+        }
+
+        td {
+            background-color: #fff;
+            color: #7f8c8d;
+        }
+
+        button#export-data {
+            background-color: #16a085;
+            padding: 12px 25px;
+            margin-top: 20px;
+            display: inline-block;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        button#export-data:hover {
+            background-color: #1abc9c;
+        }
+
+        /* Footer Section */
+        footer {
+            background-color: #2C3E50;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+            margin-top: 40px;
+            font-size: 1rem;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        /* Responsive Layout */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            main {
+                padding: 15px;
+            }
+
+            #task-creation, #data-display {
+                padding: 20px;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Scraper & Enrichment Web App</h1>
+    </header>
+
+    <main>
+        <!-- Task Creation Interface -->
+        <section id="task-creation">
+            <h2>Task Creation</h2>
+            <p>Select a scenario and input the necessary details to begin scraping data.</p>
+
+            <label for="scenario-select">Select Scenario:</label>
+            <select id="scenario-select">
+                <option value="social-media">Social Media Scraping</option>
+                <option value="find-person">Find Person</option>
+                <option value="job-search">Job Search</option>
+                <option value="data-enrichment">Personal Data Enrichment</option>
+                <option value="database-search">Database Search</option>
+            </select>
+
+            <div id="scenario-inputs"></div>
+
+            <button id="start-scraping">Start Scraping</button>
+        </section>
+
+        <!-- Data Display Section -->
+        <section id="data-display">
+            <h2>Scraped Data</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Position</th>
+                        <th>Company</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dynamic Rows -->
+                </tbody>
+            </table>
+            <button id="export-data">Export to Excel</button>
+        </section>
+    </main>
+
+    <footer>
+        <p>Inspired by Clay, Snov, Hunter, and Apollo.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const scenarioSelect = document.getElementById('scenario-select');
+            const scenarioInputs = document.getElementById('scenario-inputs');
+            const startScrapingBtn = document.getElementById('start-scraping');
+            const dataDisplay = document.querySelector('#data-display tbody');
+
+            scenarioSelect.addEventListener('change', () => {
+                const selectedScenario = scenarioSelect.value;
+                scenarioInputs.innerHTML = '';
+
+                if (selectedScenario === 'social-media') {
+                    scenarioInputs.innerHTML = ` 
+                        <label for="platform">Select Platform:</label>
+                        <select id="platform">
+                            <option value="facebook">Facebook</option>
+                            <option value="instagram">Instagram</option>
+                            <option value="twitter">Twitter</option>
+                        </select>
+                        <label for="social-media-link">Social Media Link:</label>
+                        <input type="text" id="social-media-link" placeholder="Enter the link">`;
+                } else if (selectedScenario === 'find-person') {
+                    scenarioInputs.innerHTML = ` 
+                        <label for="company-name">Company Name:</label>
+                        <input type="text" id="company-name" placeholder="Enter the company name">
+                        <label for="job-title">Job Title:</label>
+                        <input type="text" id="job-title" placeholder="Enter the job title">`;
+                } else if (selectedScenario === 'job-search') {
+                    scenarioInputs.innerHTML = `
+                        <label for="job-platform">Select Platform:</label>
+                        <select id="job-platform">
+                            <option value="linkedin">LinkedIn</option>
+                            <option value="indeed">Indeed</option>
+                        </select>
+                        <label for="job-title">Job Title:</label>
+                        <input type="text" id="job-title" placeholder="Enter the job title">
+                        <label for="job-location">Location:</label>
+                        <input type="text" id="job-location" placeholder="Enter the location">`;
+                } else if (selectedScenario === 'data-enrichment') {
+                    scenarioInputs.innerHTML = ` 
+                        <label for="person-name">Person's Name:</label>
+                        <input type="text" id="person-name" placeholder="Enter the name">
+                        <label for="company-name">Company Name:</label>
+                        <input type="text" id="company-name" placeholder="Enter the company name">`;
+                } else if (selectedScenario === 'database-search') {
+                    scenarioInputs.innerHTML = `
+                        <label for="filters">Filters:</label>
+                        <input type="text" id="filters" placeholder="Enter filter criteria">`;
+                }
+            });
+
+            startScrapingBtn.addEventListener('click', () => {
+                const rowData = [
+                    { name: 'John Doe', position: 'Manager', company: 'ABC Corp', email: 'john.doe@abc.com', phone: '123-456-7890' },
+                    { name: 'Jane Smith', position: 'Engineer', company: 'XYZ Inc', email: 'jane.smith@xyz.com', phone: '987-654-3210' }
+                ];
+
+                dataDisplay.innerHTML = '';
+                rowData.forEach(data => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${data.name}</td>
+                        <td>${data.position}</td>
+                        <td>${data.company}</td>
+                        <td>${data.email}</td>
+                        <td>${data.phone}</td>`;
+                    dataDisplay.appendChild(row);
+                });
+            });
+
+            document.getElementById('export-data').addEventListener('click', () => {
+                alert('Data exported to Excel! (Simulation)');
+            });
+        });
+    </script>
+</body>
+</html>
